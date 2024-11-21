@@ -290,11 +290,14 @@ remove the unacceptable handshake time but this does not reduce bandwidth.
 Each of the I frames is self-contained and does not react well to a portion
 being dropped or corrupted. Analogue signals are more resilient in the face
 of interference, it is important for the system to operate like this in the
-face of network problems.
+face of network problems, to behave a little more like an analogue signal.
 
-Finally, the encoding of a stream from an IP camera is spiky. The I frames
-are much bigger than the other frames in the stream nut still represent only
-one frame in time.
+# Latency and Stream Structure
+
+The encoding of a stream from an IP camera is spiky. The I frames are much
+bigger than the other frames in the stream but still represent only one frame
+in time. Intra-refresh encoding distributes the i-frame data throughout the
+stream rather than providing it all at once.
 
 ![intra frame and intra-refresh intra frame](slides/0012.png)
 
@@ -307,4 +310,26 @@ correctly render portions of the image, P and B frames then have a better
 chance of referencing valid portions of the image.
 
 * DEMO: The effects of dropped packets with intra-refresh
+
+## Customer Architecture
+
+![customer architecture diagram](slides/0013.png)
+
+* Slide: The architecture of the customer application.
+  Complete overview from camera to train decoder via radios
+
+![Platform Processor](slides/0014.png)
+
+* Slide: The platform side of the system compositing the feeds from the
+  cameras, encoding and transmitting to the train.
+
+![Decoder](slides/0015.png)
+
+* Slide: the decoder receiving the stream from the radio to display after
+  the compositor.
+
+At the decoding stage the compositing step is still required as in the event
+of data stream loss the screen should not freeze but display a failure card
+so it is clear to the operator that there is a problem.
+
 
