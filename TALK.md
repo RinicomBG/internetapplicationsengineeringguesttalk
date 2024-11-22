@@ -331,5 +331,84 @@ In this case the source is the compositor's output buffer.
 * Slide: Data flow from camera to monitors via radio transmission and
   reception.
 
+This is the overview architecture of the Piccadilly line platform CCTV to
+onboard display architecture.
+
+## From Source to Compositor
+
+We have discussed Sources and how they present their data to the compositor
+now we see that the compositor will present the composited image to a Sink
+that will encode the data and then transmit it to the train cab via Rinicom's
+software defined radio product.
+
+## I-frames
+
+Normally I-frames are transmitted in their entirety at whatever interval is
+deemed necessary for the application. This is acceptable for most situations
+where streaming video is required and for largely error-free transports.
+Unfortunately the bandwidth available to the radio is finite and interference
+is expected to be common. This lead to the requirement that the display should
+degrade gracefully.
+
+![Corrupt iframe](slides/0099_corrupt_iframe.png)
+
+The large size of I-frames makes the likelihood of packet loss within fairly
+high and loss of a parts of I-frames have a significant and far from graceful
+degradation.
+
+![Spikes in data caused by iframes](slides/0099_iframe_spikes.png)
+
+* Slide: Standard h.264 stream and an h.264 intra-refresh stream displayed
+  in a line chart to demonstrate that iframes produce spikes.
+
+The spikes in the green data stream here are I-frames, the red stream is
+the same stream but one that makes use of the intra-refresh mode of h.264
+operation.
+
+Using this intra-refresh model means that the system is more resilient to
+dropped packets since the available parts of the I frame can be used to
+correctly render portions of the image, P and B frames then have a better
+chance of referencing valid portions of the image. Unfortunately, the
+intra-refresh mode is not well supported by hardware (it is a part of the
+standard).
+
+DEMO: Corrupt data stream for normal and intra-refresh video
+
+This method does allow a more graceful recovery of the stream when packets are
+lost, even so, it is important to try and minimise the unrecoverable packet
+losses... I won't go into why.
+
+To reduce the chance of a lost packet the burst format for radio transmission
+contains a relatively basic form of FEC. FEC alone is a very interesting topic
+and more information can be found in the normal places... I recommend looking
+at a commonly used method of error correction that is not what we are about
+to discuss: Reed-Soloman coding.
+
+## XOR Redundant Packets
+
+![XOR burst for video data transmission](slides/0099_xor_burst_example.png)
+
+* Slide: The burst format used in the Rinicom SDR
+
+A burst contains several frames (UDP, MQTT, IP, whatever). Each burst
+contains a header that indicates the number of frames, the CRC, etc. And each
+frame contains a header that indicates the size of the frame, the CRC,
+location in the burst, etc. At the moment, it works like:
+
+```
+Send Burst1:
+[header burst1] [header frame1, header frame2, header frame3] [frame1, frame2, frame3]
+Send Burst2:
+[header burst2] [header frame4, header frame5] [frame4, frame5]
+Send Burst3:
+[header burst3] [burst1 ^ burst2]
+```
+
+## Rinicom Software Defined Radio
+
+Transmission and reception of video data is over the Rinicom software defined
+radio product.
+
+TODO: Specifications of Rinicom Radios here
 
 
