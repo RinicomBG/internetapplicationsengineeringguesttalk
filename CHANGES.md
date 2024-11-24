@@ -8,6 +8,35 @@ the general Linux desktop and server configuration:
 * Video Interface: DRM and KMS
 * Weston, sway and Wayland
 
+## GRUB
+
+The "Grand Unified Bootloader" this is responsible for getting the kernel into
+ram along with an initial ram fs then allowing the kernel to run.
+
+This kind of tomfoolery was not necessary, now there is also an "EFI Boot
+Stub" that means a UEFI system can boot the kernel without the need for a
+bootloader.
+
+The video wall project must support a way for features to be added and the
+system updated. GRUB plays an important role in choosing the correct system
+to boot.
+
+The architecture is simple, there are 6 partitions:
+
+* EFI Boot (FAT32)
+* Kernel A
+* Kernel B
+* Root Filesystem A
+* Root Filesystem B
+* Persistent user data
+
+This allows a complete system to be installed and verified before switching
+to the just downloaded system which could potentially be corrupt.
+
+Downloading a new system would involve updating the currently unused
+partitions and then updating the GRUB configuration to use the new
+installation once verified.
+
 ## systemd
 
 The system is started and maintained by `systemd`, the somewhat controversial
@@ -94,9 +123,36 @@ code in `wl_roots` to find out).
 Unfortunately, as `sway` is a much more capable compositor than the Kiosk mode
 of Weston we have some new problems.
 
+[Wayland Book](https://wayland-book.com/) written by Drew DeVault, still
+incomplete but has a lot of useful information for writing a Wayland client
+or compositor without a framework like qt or GTK.
+
 ### sway and virtual desktops
 
+![Surfaces and Workspaces](slides/0031_surfaces_and_workspaces.png)
 
+![Virtual coordinate space](slides/0032_workspaces_and_virtual_coordinate_space.png)
+
+![Workspaces and outputs](slides/0033_workspaces_and_outputs.png)
+
+* Slide showing surfaces, workspaces and outputs.
+
+Before I continue I must introduce a new term: "surface" this is effectively
+a window. It is a rectangular area on the compositor that will contain the
+running application's frame buffer. Surfaces have a size and a location in the
+compositor's global coordinate space. In sway, and many other compositors,
+there is another level of indirection known as a workspace. The rules of sway,
+not the Wayland protocol, say that an output will contain a single workspace
+and also that a workspace will be associated with an output.
 
 When a monitor is removed the user can nolonger see the output on that
-display and in sway a workspace is assigned to an output.
+display and in sway a workspace is assigned to an output. Of course it is not
+much use if you cannot see the application surfaces that may have been present
+on that output. If the disconnected output was displaying the focussed
+workspace then sway will display that workspace on one of the other connected
+outputs.
+
+This is where we begin to see a problem...
+
+DEMO: Video of unplugging a monitor and the effect on sway
+
