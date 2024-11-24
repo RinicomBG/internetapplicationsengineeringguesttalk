@@ -10,6 +10,8 @@ the general Linux desktop and server configuration:
 
 ## GRUB
 
+![Partition Layout](slides/0025_partition_layout.png)
+
 The "Grand Unified Bootloader" this is responsible for getting the kernel into
 ram along with an initial ram fs then allowing the kernel to run.
 
