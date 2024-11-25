@@ -62,6 +62,8 @@ The video wall must be aware of the connected output devices. The management
 software is used to configure the virtual surface to be displayed on specific
 monitors. There are several ways of 
 
+![Video Wall Management Interface](slides/0026_videowall_management_interface.png)
+
 * Slide of video wall web management interface
 
 There are several interfaces available to draw graphics on a video interface.
