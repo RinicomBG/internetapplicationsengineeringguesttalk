@@ -64,7 +64,15 @@ check that any configured interface matches the requested address.
 
 This is a typical network, the IP Address 192.168.80.2 is the internet router
 and will NAT traffic in the usual manner. The other systems are normal client
-machines and one of them is about to connect to a VPN.
+machines and one of them will be given a new IP address on a different
+interface. A dummy interface may be created like this:
+
+```
+modprobe dummy
+ip link add dummy0 type dummy
+ip link set up dev dummy0
+ip addr add 192.168.90.10/24 dev dummy0
+```
 
 DEMO: Use virtual machines to demonstrate the unintuitive behaviour
 
