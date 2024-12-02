@@ -141,11 +141,30 @@ protocol which is fine for a static web page but in our widget scenario we
 require the ability to render an image based on some value that comes from
 the customer's application.
 
-Traditional CGI scripting would work but in 2024 it might be seen as a little
-antiquated. Non-the-less, lets have a look how the old CGI process worked
-and see why it is not used so much anymore.
+HTTP allows a browser to send data to a web page in many different ways, the
+most common are query strings and POST requests. These methods are used
+frequently in current web technologies but the request is only a part of the
+story, implementation of the service at the back is also important.
 
-![Traditional CGI](slides/0109_traditional_cgi.png)
+All the content delivered by a normal web server or a CDN would be static,
+that is to say that it is just a file and will not change. The browser would
+normally only request the page once and then wait for user interaction.
+
+![Meta Refresh Tag](slides/0121_meta_refresh_tag.png)
+
+* Slide: the meta refresh tag used to periodically reload a page
+
+This tag can be used to periodically reload the current page without user
+interaction. Using this method a page can be written that could be updated
+on disk and then the updated contents will be presented when the browser
+reloads the page. No javascript required... this feature is rarely used
+by modern websites but browsers still support it:
+
+* [Meta Refresh](https://en.wikipedia.org/wiki/Meta_refresh)
+
+## CGI Scripting
+
+![Traditional CGI](slides/0131_traditional_cgi.png)
 
 * Slide: Communication Sequence Diagram for CGI processes
 
@@ -166,7 +185,11 @@ For simple and low-traffic sites this is a completely valid solution, even
 today, the problems begin to surface when a server is required to service
 a large number of clients.
 
-![FastCGI](slides/0110_fastcgi.png)
+Traditional CGI scripting would work for video wall but in 2024 it might be
+seen as a little antiquated. What has happened to the model since the early
+90s?
+
+![FastCGI](slides/0132_fastcgi.png)
 
 * Slide: Communication Sequence Diagram for FastCGI processes
 
@@ -175,6 +198,23 @@ the process overhead. By having a long lived process it is also possible to
 perform setup tasks before a client connects or, as is more common practice
 to use a pool of resources which lives across multiple requests.
 For example a database connection pool.
+
+* Reference for learning more about [nginx, FastCGI and Docker](https://medium.com/@bengreen5/building-a-minimal-12-factor-application-with-fastcgi-c-and-docker-part-1-d0df60782)
+
+## Requester
+
+One additional issue with the above methods of requesting data from a server
+is just that, the requester is the browser and in our case the widget would
+be better architected to be notified of a change rather than continuously
+polling the server.
+
+TODO: Talk about how the page can be updated with:
+
+* Long Polling
+* Web Sockets
+
+* DEMO: Web Page running a widget that can alter the content when a
+  message is received via MQTT over a websocket connection
 
 * DEMO: Video of digital twin rendered in a web browser
 
