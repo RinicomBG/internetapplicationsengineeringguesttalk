@@ -350,13 +350,13 @@ Unfortunately the bandwidth available to the radio is finite and interference
 is expected to be common. This lead to the requirement that the display should
 degrade gracefully.
 
-![Corrupt iframe](slides/0099_corrupt_iframe.png)
+![Corrupt iframe](slides/0013_corrupt_iframe.png)
 
 The large size of I-frames makes the likelihood of packet loss within fairly
 high and loss of a parts of I-frames have a significant and far from graceful
 degradation.
 
-![Spikes in data caused by iframes](slides/0099_iframe_spikes.png)
+![Spikes in data caused by iframes](slides/0014_iframe_spikes.png)
 
 * Slide: Standard h.264 stream and an h.264 intra-refresh stream displayed
   in a line chart to demonstrate that iframes produce spikes.
