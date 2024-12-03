@@ -106,7 +106,7 @@ and so we hope this system will help keep those numbers low.
 
 TODO: find specific numbers for Underground injuries and deaths.
 
-![latency](slides/0005.png)
+![latency](slides/0005_man_on_platform_smaller.png)
 
 * Side demonstrating latency problem
 
@@ -120,6 +120,8 @@ of user interface developers and, are of the utmost importance for game develope
 Game developers are normally concerned with response times from input devices, besides
 the obvious keyboard and mouse, network interfaces are also devices which are within
 the realm of concern for input latency... if that input is via the network!
+
+![Latency](slides/0005_man_falling_off_platform_smaller.png)
 
 ## Graceful Degradation
 
