@@ -216,5 +216,35 @@ TODO: Talk about how the page can be updated with:
 * DEMO: Web Page running a widget that can alter the content when a
   message is received via MQTT over a websocket connection
 
-* DEMO: Video of digital twin rendered in a web browser
+## DEMO Includes
+
+Meta refresh, this is good but there are some problems:
+
+* What happens when the server is part way writing to the file? The user
+  could get a partially written file.
+* The service has to be running all the time, if the service were part of
+  a larger system then I would probably look at the architecture of that
+  application since it should probably be compartmentalised.
+
+XMLHttpRequest
+
+* Similar to the previous example, the file could be partially written
+  leading to a poor user experience.
+* Service has to run all the time.
+
+Both these systems rely on the back-end service updating a file to present
+to the user. What about traditional cgi?
+
+CGI Script
+
+* Great but now the overhead is one process per client and we are serving the
+  same data to each.
+
+FastCGI
+
+* Now we are talking, one process, only does stuff when asked!
+
+Web Sockets
+
+* ---
 
