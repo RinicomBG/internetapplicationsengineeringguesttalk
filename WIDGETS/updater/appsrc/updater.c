@@ -2,7 +2,6 @@
 #include <string.h>
 #include <errno.h>
 #include <signal.h>
-#include <atomic_ops.h>
 #include <unistd.h>
 #include "timefn.h"
 #include "filesystem.h"
