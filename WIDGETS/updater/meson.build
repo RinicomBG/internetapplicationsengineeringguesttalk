@@ -7,6 +7,7 @@ c_args += '-D__COMPILE_FOR_LINUX'
 
 add_project_arguments(c_args, language: [ 'c', 'cpp' ])
 
+fcgi_dep = dependency('fcgi')
 cc = meson.get_compiler('c')
 math_dep = cc.find_library('m', required : false)
 
@@ -22,4 +23,5 @@ updater_dep = declare_dependency(include_directories : updater_include_dirs, lin
 executable('updater', 'appsrc/updater.c', dependencies : [ updater_dep, math_dep ])
 executable('updater_json', 'appsrc/updater_json.c', dependencies : [ updater_dep, math_dep ])
 executable('updater_cgi', 'appsrc/updater_cgi.c', dependencies : [ updater_dep, math_dep ])
+executable('updater_fcgi', 'appsrc/updater_fcgi.c', dependencies : [ updater_dep, math_dep, fcgi_dep ])
 

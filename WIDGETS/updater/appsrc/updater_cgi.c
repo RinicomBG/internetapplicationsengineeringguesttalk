@@ -21,6 +21,7 @@ int main(int argc, char *argv[]) {
 	res = filesystem_loadfiletoram("index.template.html", (void **)&html_string.buf, &html_string.pos);
 	if (res != 0) {
 		fprintf(stdout, "Could not load template file");
+		goto error;
 	}
 	html_string.size = html_string.pos;
 	unixtime_millis = timefn_getcurrentunixtimemillis();
