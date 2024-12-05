@@ -255,5 +255,9 @@ You don't **need** a framework... they are like stabilisers on your bicycle!
 The Web user interface for videowall is written in Angular and though there
 are some advantages many things are made much more difficult.
 
+Security implications of using a framework. Or many different services
+providing different things, memcached, redis, mysql/mariadb, php, Magento,
+apache, Linux, ssh or systemd.
+
 (Were gonna build a framework)[https://dylanbeattie.net/songs/framework.html]
 
