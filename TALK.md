@@ -392,6 +392,12 @@ Effect of intra-refresh i-frame video encoding when faced with packet loss
 https://stackoverflow.com/questions/58067669/sending-udp-stream-gstreamer#58079717
 
 gst-launch-1.0 multifilesrc location=train_video.h264 ! h264parse ! rtph264pay ! udpsink port=7000 host=192.168.1.169
+tc qdisc show dev eth0
+tc qdisc add dev eth0 root handle 1: prio priomap 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+tc qdisc add dev eth0 parent 1:2 handle 20: netem loss 10% 25%
+tc qdisc del dev eth0 parent 1:2 handle 20:
+
+tc qdisc add dev eth0 parent 1:2 handle 20: netem delay 100ms
 ```
 
 ## XOR Redundant Packets
