@@ -386,6 +386,14 @@ and more information can be found in the normal places... I recommend looking
 at a commonly used method of error correction that is not what we are about
 to discuss: Reed-Soloman coding.
 
+Effect of intra-refresh i-frame video encoding when faced with packet loss
+
+```
+https://stackoverflow.com/questions/58067669/sending-udp-stream-gstreamer#58079717
+
+gst-launch-1.0 multifilesrc location=train_video.h264 ! h264parse ! rtph264pay ! udpsink port=7000 host=192.168.1.169
+```
+
 ## XOR Redundant Packets
 
 ![XOR burst for video data transmission](slides/0099_xor_burst_example.png)
