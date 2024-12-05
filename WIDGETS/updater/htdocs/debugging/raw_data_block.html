@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark light" />
+<script src="../mqtt.min.js"></script>
+<script src="../locallib.js"></script>
+<style>
+.error_message_colour {
+	color: red;
+}
+</style>
+</head>
+<body>
+<h1>MQTT Subscription to Binary Data</h1>
+<p>This will subscribe to a topic and dump the received data like
+hexdump might. See the console for debugging information.</p>
+<p>add a query parameter <code>?widget.data.url=ws://127.0.0.1:9000</code>
+to use a custom mqtt server address.</p>
+<p>Topic: <span id="topic_name_in_html">TopicNameGoesHere</span></p>
+<pre id="raw_data"></pre>
+<p><span id="error_string" class="error_message_colour"></span></p>
+<hr/>
+<p>datablock_debugging/0.0.1</p>
+<script>
+'use strict';
+
+	var topic_name = 'chatty';
+	var mqttUri = 'ws://localhost:9000';
+	var queryParams = new URLSearchParams(window.location.search);
+	if (queryParams.get('widget.data.url') !== undefined) {
+		mqttUri = queryParams.get('widget.data.url');
+	}
+	var dataConnection = mqtt.connect(mqttUri);
+	var raw_data = document.getElementById("raw_data");
+	var error_string = document.getElementById("error_string");
+
+	dataConnection.on('message', function (topic, message) {
+		console.log('message ' + topic, message);
+		raw_data.innerHTML = LocalLib.hexdump(message);
+	});
+
+	dataConnection.on('connect', function(event) {
+		console.log('connect event', event);
+		dataConnection.subscribe(topic_name);
+	});
+
+	dataConnection.on('disconnect', function(event) {
+		console.log('disconnect event', event);
+	});
+
+	dataConnection.stream.on('error', function(event) {
+		console.log('error', event);
+		error_string.innerHTML = 'Connection Error, refresh page to try again.';
+		dataConnection.end();
+	});
+
+	dataConnection.on('close', function(event) {
+		console.log('close event', event);
+	});
+
+	dataConnection.on('offline', function(event) {
+		console.log('offline', event);
+	});
+
+	document.getElementById('topic_name_in_html').innerText = topic_name;
+</script>
+</body>
+</html>
