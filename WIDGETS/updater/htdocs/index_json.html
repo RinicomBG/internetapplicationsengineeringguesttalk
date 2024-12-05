@@ -5,12 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="color-scheme" content="dark light" />
 <title>index_json.html</title>
+<style>
+body {
+	background: #ccc;
+	color: #000;
+}
+</style>
 <script>
-
+	var update_time = null;
+	(update_time = function() {
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", "index.json", true);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				var response = JSON.parse(xhr.responseText);
+				document.getElementById("time_from_server").innerText = response.server_time;
+			}
+		}
+		xhr.send();
+	})();
 </script>
 </head>
 <body>
 	<h1>This page uses XMLHttpRequest to retrieve the JSON</h1>
 	<p>The time on the server is <span id="time_from_server">Please wait...</span>.</p>
+	<p><button id="update_time_from_server_button">Update Now</button></p>
+	<script>
+		document.getElementById("update_time_from_server_button").onclick = update_time;
+	</script>
 </body>
 </html>
