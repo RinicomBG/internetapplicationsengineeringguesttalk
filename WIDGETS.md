@@ -248,3 +248,12 @@ Web Sockets
 
 * ---
 
+## Frameworks
+
+You don't **need** a framework... they are like stabilisers on your bicycle!
+
+The Web user interface for videowall is written in Angular and though there
+are some advantages many things are made much more difficult.
+
+(Were gonna build a framework)[https://dylanbeattie.net/songs/framework.html]
+
