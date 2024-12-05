@@ -274,6 +274,16 @@ frame.
 Now that the frame has been delivered to the frame buffer the next stage of
 the process can begin: Compositing.
 
+# Frame Buffer Shared Memory Chat
+
+![Slide with 2 processes and some shared memory](slides/0010_)
+
+Shared memory is just that, memory mapped into the virtual address space of
+more than one process. Frames are large, even when in a subsampled YCrCb
+colorspace, copying them from source to compositor will have an impact on the
+latency and as we discussed earlier, latency is important commercially and
+for safety reasons.
+
 # Compositor
 
 The compositor is the process in the video wall that reads the frames from
@@ -400,6 +410,8 @@ tc qdisc del dev eth0 parent 1:2 handle 20:
 
 tc qdisc add dev eth0 parent 1:2 handle 20: netem delay 100ms
 ```
+
+## Partition layout and updating
 
 ## Rinicom Radio Specifications
 
