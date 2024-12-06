@@ -22,10 +22,10 @@ work for: Rinicom. I am Ben and you have already met Sean.
 The success of a company has always been in the efficiency of operation and
 the safety of people that execute those operations.
 Safe, happy employees are productive and create value. Unsafe employees are
-concerned over their wellbeing, unhappy, will get hurt and do not create
+concerned over their well-being, unhappy, will get hurt and do not create
 value. One of our customers said: "If it is dangerous, boring or labour intensive
 a machine should be doing it". I agree with this except perhaps if it is not
-possible or unfeasable; in this case a machine should at least be helping.
+possible or unfeasible; in this case a machine should at least be helping.
 
 Bearing that in mind the video wall solution helps customers by composing video
 displays from relevant sources: cameras and other near real time data, and
@@ -86,7 +86,7 @@ light rail travel.
 
 London underground is the oldest underground passenger railway network in the
 world, dating back to 1863. The trains on the Piccadilly Line also known as
-"Deep-level tube" trains have been in service since 1975 and are amoungst the oldest on
+"Deep-level tube" trains have been in service since 1975 and are amongst the oldest on
 the network, younger only than the trains on the Bakerloo line, and are due to be
 replaced by new Siemens trains that will hopefully enter service at the end of
 2025. Rinicom has been working with Transport for London and alongside Siemens
@@ -112,14 +112,15 @@ TODO: find specific numbers for Underground injuries and deaths.
 
 Low latency for the video wall is what the marketing department refer to as a maximum
 time from "Glass-to-Glass". Of course what is actually meant by that is time taken
-from photon acting on the camera sensor to the destination display reacting. More
-accurately this could be referred to as "sensor to pixel latency".
+from photon acting on the camera sensor to the destination display reacting.
+Alternatively we could refer to this as "sensor to pixel latency".
 
-The low-latency requirement presents several problems that are often also the concern
-of user interface developers and, are of the utmost importance for game developers.
-Game developers are normally concerned with response times from input devices, besides
-the obvious keyboard and mouse, network interfaces are also devices which are within
-the realm of concern for input latency... if that input is via the network!
+The low-latency requirement presents several problems that are often also the
+concern of user interface developers and, are of the utmost importance for
+game developers. Game developers are normally concerned with response times
+from input devices, besides the obvious keyboard and mouse, network interfaces
+are also devices which are within the realm of concern for input latency...
+if that input is via the network!
 
 ![Latency](slides/0005_1_man_falling_off_platform_smaller.png)
 
@@ -273,6 +274,16 @@ frame.
 Now that the frame has been delivered to the frame buffer the next stage of
 the process can begin: Compositing.
 
+# Frame Buffer Shared Memory Chat
+
+![Slide with 2 processes and some shared memory](slides/0010_)
+
+Shared memory is just that, memory mapped into the virtual address space of
+more than one process. Frames are large, even when in a subsampled YCrCb
+colorspace, copying them from source to compositor will have an impact on the
+latency and as we discussed earlier, latency is important commercially and
+for safety reasons.
+
 # Compositor
 
 The compositor is the process in the video wall that reads the frames from
@@ -399,6 +410,41 @@ tc qdisc del dev eth0 parent 1:2 handle 20:
 
 tc qdisc add dev eth0 parent 1:2 handle 20: netem delay 100ms
 ```
+
+## Partition layout and updating
+
+## Rinicom Radio Specifications
+
+## Hardware Configuration
+
+Constraints: somewhere in an ISM band maybe? 30-950MHz, can be hard to find
+two 8MHz channels next to one and other with a 2MHz guard band.
+
+Proposal for 50MHz, efficiency difficulties, wavelength and physical antenna
+size mean large losses in power.
+
+Leaky feeder.
+
+Current solution: 8MHz bandwidth centred at 64 and 74MHz with a 2MHz guard
+band. Chosen location within amateur radio usage frequencies. OFDM encoded
+License terms are that the system is not to interfere with other communcation
+systems, other radio users on these frequency bands may complain to regulator
+if their usage is disrupted.
+
+Bandwidth of radio in bps ODFM encoded burst mode operation.
+
+Interface to radio Ethernet UDP etc. Transmission of MQTT and Video data
+not wrapped in IP layer headers. Raw data only.
+
+Receiving side transforms data into UDP packets to be sent to the decoder on
+the train. Orthogonal Frequency Division Multiplexing (OFDM). COFDM employes
+forward error correction techniques. Slide with Michel Alard :-)
+
+Forward Error Correction: Reed–Solomon codes. Parchive "parity archive" used
+widely on usenet.
+
+Packets are encoded into three parts: A A^B B allowing for one of these three
+to be lost.
 
 ## XOR Redundant Packets
 
